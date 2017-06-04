@@ -1,13 +1,8 @@
 import React, {Component} from 'react'
 import styled from 'styled-components'
 import { presence, connected, database } from '../helpers/firebase'
-import { Container } from '../../style/components'
+import { Container, ButtonAvatar, Avatar, H1 } from '../../style/components'
 
-
-const HeroButton = styled.img`
-    width: 150px;
-    height: 150px;
-`;
 
 class MyHero extends Component {
 
@@ -15,7 +10,6 @@ class MyHero extends Component {
 
         // Get user Id
         const userRef = presence.push();
-        this.setState({userId: userRef.key});
 
         //register connections and disconnections
         connected.on('value', snapshot => {
@@ -26,8 +20,8 @@ class MyHero extends Component {
         });
 
         // watch heroes changes
-        database.ref('/heroes').on('value', snapshot => {
-            this.setState({heroes: snapshot.val()});
+        database.ref('/heroes/captainamerica').on('value', snapshot => {
+            this.setState({votes: snapshot.val()});
         });
 
         // watch presence changes
@@ -38,17 +32,24 @@ class MyHero extends Component {
     }
 
     vote(hero) {
-        var vote;
-        console.log('voting', hero)
-        vote = database.ref(`/heroes/${hero}`).push();
-        vote.set({userId: this.state.userId, voted: true});
+        var updates = {}
+        updates[`/heroes/${hero}`] = this.state.votes+1
+        database.ref().update(updates);
     }
 
     render() {
-        return <Container direction="column" align="center">
-            <h1>Tap your hero as fast as you can!</h1>
-            <HeroButton src={`../../assets/captainamerica.png`} alt="Captain America" onClick={() => this.vote('captainamerica')} />
-        </Container>
+        return (
+            <Container direction="column" align="center" justify="center" text="center">
+                <H1>Tap your hero as fast as you can!</H1>
+                <ButtonAvatar>
+                    <Avatar 
+                        src={`../../assets/captainamerica.png`} 
+                        alt="Captain America" 
+                        onClick={() => this.vote('captainamerica')} 
+                    />
+                </ButtonAvatar>
+            </Container>
+        )
     }
 }
 

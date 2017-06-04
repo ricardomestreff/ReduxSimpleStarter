@@ -1,28 +1,19 @@
 import React, { Component } from 'react';
 import { presence, connected, database } from '../helpers/firebase'
-
-import Heroes from '../components/heroes'
+import { heroes } from '../config/heroes'
+import { Avatar, Container, Button } from '../../style/components'
+import Hero from '../components/hero'
 
 export default class App extends Component {
   
   constructor (props) {
     super(props)
     this.state = null;
+    this.vote = this.vote.bind(this);
+    this.reset = this.reset.bind(this);
   }
 
   componentDidMount() {
-
-    // Get user Id
-    const userRef = presence.push();
-    this.setState({userId: userRef.key});
-
-    //register connections and disconnections
-    connected.on('value', snapshot => {
-      if (snapshot.val()) {
-        userRef.onDisconnect().remove();
-        userRef.set(true);
-      }
-    });
 
     // watch heroes changes
     database.ref('/heroes').on('value', snapshot => {
@@ -37,24 +28,47 @@ export default class App extends Component {
   }
 
   vote(hero) {
-    var vote;
-    vote = database.ref(`/heroes/${hero}`).push();
-    vote.set({userId: this.state.userId, voted: true});
+    var votes = (!this.state.heroes[hero] ? 1 : this.state.heroes[hero]+1);
+    database.ref(`/heroes/${hero}`).set(votes);
   }
 
   shouldComponentUpdate(nextProps) {
       return !!(this.state && this.state.heroes);
   }
 
+  renderHeroes() {
+    const keys = Object.keys(heroes);
+    return keys.map((key) => {
+      const hero = heroes[key];
+      const votes = this.state.heroes[hero.id];
+      
+      return <Hero key={key} id={key} hero={hero} votes={votes} onClick={this.vote} />
+    });
+  }
+
+  reset() {
+    const updates = {};
+    const keys = Object.keys(heroes);
+    keys.map(key => {
+      updates[`/heroes/${key}`] = 0
+    });
+    database.ref().update(updates);
+  }
+
   render() {
+    
     if (!this.state || !this.state.heroes) {
       return <div>Loading app...</div>
     }
 
     return (
         <div>
-          <h1>React Heroes - online users: {this.state.onlineUsers}</h1>
-          <Heroes heroes={this.state.heroes} onVote={this.vote.bind(this)} />
+          <h1>React Heroes</h1>
+          <p>online users: {this.state.onlineUsers}</p>
+          <Button type="button" value="Reset" onClick={this.reset} />
+          <Container justify="space-around" direction="row">
+            {this.renderHeroes()}
+          </Container>
         </div>
     );
   }

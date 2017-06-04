@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import SelectableHero from '../components/selectable_hero'
-import { Button, Container } from '../../style/components';
+import { Button, Container, H1 } from '../../style/components';
 import { heroes } from '../config/heroes'
 
 
@@ -34,15 +34,18 @@ class HeroSelector extends Component {
         if (!this.state) return <div></div>
 
         return (
-            <form onSubmit={this.chooseHero.bind(this)}>
-                <Container direction="column" justify="center" align="center">
-                    <h1>Choose your hero:</h1>
-                    <Container direction="row" justify="space-around">
-                        {this.renderHeroes()}
+            <Container text="center" direction="column" justify="center" align="center">
+                <H1>Choose your hero:</H1>
+                <form onSubmit={this.chooseHero.bind(this)}>
+                    <Container direction="column" justify="center" align="center">
+                        <Container direction="row" justify="space-around">
+                            {this.renderHeroes()}
+                        </Container>
+                        <Button type="submit" color="primary" value="Select" />
                     </Container>
-                    <Button type="submit" color="primary" value="Select" />
-                </Container>
-            </form>
+                </form>
+            </Container>
+            
         )
     }
 }

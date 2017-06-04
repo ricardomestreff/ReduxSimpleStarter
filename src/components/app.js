@@ -9,7 +9,7 @@ export default class App extends Component {
 
   render() {
     return (
-      <Container>
+      
         <Router>
           <Switch>
             <Route exact path="/" component={HeroSelector} />
@@ -17,7 +17,7 @@ export default class App extends Component {
             <Route path="/myhero" component={MyHero} />
           </Switch>
         </Router>
-      </Container>
+      
     )
   }
 }

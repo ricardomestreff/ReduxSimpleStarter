@@ -1,32 +1,21 @@
-import React from 'react'
-import styled from 'styled-components'
-
-const heroHeight = 32;
-const heroWidth = 36;
-
-const Hero = styled.div`
-    display: flex;
-`;
-
-const Avatar = styled.img`
-  width: ${heroHeight}px;
-  height: ${heroWidth}px;
-  margin: 5px;
-  transition: all .2s ease-in-out;
-  margin-top: ${props => props.votes}px;
-  &:hover {
-      cursor: pointer;
-      transform: scale(1.2);
-  }
-`;
+import React, { Component } from 'react'
+import { Avatar } from '../../style/components'
 
 
+export default class Hero extends Component {
 
-export default ({img, description, votes, onHeroClick}) => {
-    return (
-        <Hero>
-            <Avatar src={img} alt={description} onClick={onHeroClick} votes={votes}/>
-            <span>{votes}</span>
-        </Hero>
-    )
+    shouldComponentUpdate(nextProps) {
+      return this.props.votes != nextProps.votes;
+    }
+
+    render() {
+        
+        const { hero, votes, onClick } = this.props;
+
+        return <Avatar 
+            src={`../../assets/${hero.id}.png`} 
+            alt={hero.name} 
+            votes={votes} 
+            onClick={() => {onClick(hero.id)}} />
+    }
 }

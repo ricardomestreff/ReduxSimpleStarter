@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
-const heroHeight = 32;
-const heroWidth = 36;
+const heroHeight = 48;
+const heroWidth = 54;
 
 
 export const Container = styled.div`
@@ -9,6 +9,18 @@ export const Container = styled.div`
     flex-direction: ${props => (props.direction ? props.direction : 'column')};
     justify-content: ${props => (props.justify ? props.justify : 'flex-start')};
     align-items: ${props => (props.align ? props.align : 'flex-start')};
+    margin: 1rem;
+    text-align: ${props => (props.text ? props.text : 'inherit')};
+    flex: 1;
+    box-sizing: border-box;
+`;
+
+export const Panel = styled.div`
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 0;
+    background-color: #FFF;
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,.16), 0 0 2px 0 rgba(0,0,0,.12);
 `;
 
 export const HiddenRadio = styled.input`
@@ -40,19 +52,33 @@ export const Button = styled.input`
     }
 `;
 
-export const HeroAvatar = styled.img`
-    width: ${heroHeight*1.5}px;
-    height: ${heroWidth*1.5}px;
-`;
 
-const Avatar = styled.img`
+export const Avatar = styled.img`
   width: ${heroHeight}px;
   height: ${heroWidth}px;
   margin: 5px;
   transition: all .2s ease-in-out;
-  margin-top: ${props => props.votes}px;
-  &:hover {
-      cursor: pointer;
-      transform: scale(1.2);
-  }
+  transform: translateY(${props => props.votes || 0}px);
+`;
+
+export const ButtonAvatar = styled.button`
+    background-color: ${props => props.color || 'transparent'};
+    border: none;
+    box-shadow: 0 0.4rem 1rem #c3c3c3;
+    border-radius: 50%;
+    width: ${heroHeight*3}px;
+    height: ${heroHeight*3}px;
+
+    &:active {
+        box-shadow: 0 0 0;
+        outline: none;
+    }
+
+    &:focus {
+        outline: none;
+    }
+`;
+
+export const H1 = styled.h1`
+    margin-bottom: 3rem;
 `;
