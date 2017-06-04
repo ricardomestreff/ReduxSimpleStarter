@@ -10,17 +10,11 @@ export const Container = styled.div`
     justify-content: ${props => (props.justify ? props.justify : 'flex-start')};
     align-items: ${props => (props.align ? props.align : 'flex-start')};
     margin: 1rem;
+    padding: 0.5rem;
     text-align: ${props => (props.text ? props.text : 'inherit')};
     flex: 1;
     box-sizing: border-box;
-`;
-
-export const Panel = styled.div`
-    padding: 15px;
-    margin-bottom: 20px;
-    border-radius: 0;
-    background-color: #FFF;
-    box-shadow: 0 2px 2px 0 rgba(0,0,0,.16), 0 0 2px 0 rgba(0,0,0,.12);
+    background-color: ${props => props.background || 'transparent'};
 `;
 
 export const HiddenRadio = styled.input`
@@ -43,7 +37,6 @@ export const Button = styled.input`
     background-color: transparent;
     border: 1px solid #c3c3c3;
     padding: 5px 10px;
-    margin-top: 20px;
 
     &:hover {
         background-color: #fcfcfc;

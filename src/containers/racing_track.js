@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { presence, connected, database } from '../helpers/firebase'
 import { heroes } from '../config/heroes'
-import { Avatar, Container, Button } from '../../style/components'
+import { Avatar, H1, Container, Button } from '../../style/components'
 import Hero from '../components/hero'
 
 export default class App extends Component {
@@ -63,9 +63,11 @@ export default class App extends Component {
 
     return (
         <div>
-          <h1>React Heroes</h1>
-          <p>online users: {this.state.onlineUsers}</p>
-          <Button type="button" value="Reset" onClick={this.reset} />
+          <Container background="#c3c3c3" justify="space-between" align="center" direction="row">
+            <H1>React Heroes</H1>
+            <span>online users: {this.state.onlineUsers}</span>
+            <Button type="button" value="Reset" onClick={this.reset} />
+          </Container>
           <Container justify="space-around" direction="row">
             {this.renderHeroes()}
           </Container>
