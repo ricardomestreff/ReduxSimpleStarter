@@ -20,14 +20,13 @@ const Avatar = styled.img`
   }
 `;
 
-const Popularity = styled.span`
-`;
+
 
 export default ({img, description, votes, onHeroClick}) => {
     return (
         <Hero>
             <Avatar src={img} alt={description} onClick={onHeroClick} votes={votes}/>
-            <Popularity>{votes}</Popularity>
+            <span>{votes}</span>
         </Hero>
     )
 }

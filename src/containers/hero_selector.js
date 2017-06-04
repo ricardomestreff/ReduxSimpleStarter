@@ -1,104 +1,48 @@
 import React, {Component} from 'react'
-import styled from 'styled-components'
+import SelectableHero from '../components/selectable_hero'
+import { Button, Container } from '../../style/components';
+import { heroes } from '../config/heroes'
 
-
-const RadioHero = styled.input`
-    display: none;
-
-    &:checked + label {
-        background: radial-gradient(${props => props.color} , transparent);
-    }
-`;
-
-const LabelHero = styled.label`
-    display: flex;
-    align-items: center;
-    margin: 5px;
-    padding: 5px;
-    border-radius: 15px;
-`;
-
-const heroHeight = 32;
-const heroWidth = 36;
-
-const ImageHero = styled.img`
-    width: ${heroHeight*1.5}px;
-    height: ${heroWidth*1.5}px;
-`;
-
-const HeroList = styled.div`
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-`;
-
-const Button = styled.input`
-    background-color: transparent;
-    border: 1px solid #c3c3c3;
-    padding: 5px 10px;
-    margin-top: 20px;
-
-    &:hover {
-        background-color: #fcfcfc;
-        cursor: pointer;
-        box-shadow: 0 3px 8px #c3c3c3;
-    }
-`;
-
-const FormHero = styled.form`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-`;
 
 class HeroSelector extends Component {
 
     constructor(props) {
         super(props)
-        this.state = { selectedHero: 'captainamerica' }
+        this.state = {selectedHero: 'captainamerica'};
     }
 
     renderHeroes() {
-        const heroes=['captainamerica','hulk','wonderwoman','superman'];
-        const colors = {
-            captainamerica: 'blue',
-            hulk: 'green',
-            wonderwoman: 'yellow',
-            superman: 'red'
-        }
-        return heroes.map((hero) => {
-            return <div key={hero}>
-                    <RadioHero 
-                        type="radio"
-                        name="hero" 
-                        id={hero}
-                        value={hero}
-                        color={colors[hero]}
-                        checked={this.state.selectedHero === hero} 
-                        onChange={() => {this.setState({selectedHero: hero})}} />
-                    <LabelHero htmlFor={hero}>
-                        <ImageHero src={`../../assets/${hero}.png`} alt={hero} />
-                    </LabelHero>
-                </div>
-        })
+        
+        const keys = Object.keys(heroes);
+
+        return keys.map((key) => {
+            const hero = heroes[key];
+            return <SelectableHero key={hero.id} id={hero.id} name={hero.name} color={hero.color} selected={this.state.selectedHero === hero.id} onCheck={() => {this.selectHero(hero.id)}} />
+        });
+    }
+
+    selectHero(hero) {
+        this.setState({selectedHero: hero})
     }
 
     chooseHero(evt) {
         evt.preventDefault();
-        console.log(this.state.selectedHero);
     }
 
     render() {
+
+        if (!this.state) return <div></div>
+
         return (
-            <div>
-                <h1>Select your hero</h1>
-                <FormHero onSubmit={this.chooseHero.bind(this)}>
-                    <HeroList>
+            <form onSubmit={this.chooseHero.bind(this)}>
+                <Container direction="column" justify="center" align="center">
+                    <h1>Choose your hero:</h1>
+                    <Container direction="row" justify="space-around">
                         {this.renderHeroes()}
-                    </HeroList>
+                    </Container>
                     <Button type="submit" color="primary" value="Select" />
-                </FormHero>
-            </div>
+                </Container>
+            </form>
         )
     }
 }
