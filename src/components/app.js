@@ -5,7 +5,6 @@ import Container from 'muicss/lib/react/container';
 import { presence, connected, heroes, database } from '../helpers/firebase'
 
 import Heroes from './heroes'
-import Stats from './stats'
 
 export default class App extends Component {
   
@@ -29,7 +28,7 @@ export default class App extends Component {
     });
 
     // watch heroes changes
-    heroes.on('value', snapshot => {
+    database.ref('/heroes').on('value', snapshot => {
       this.setState({heroes: snapshot.val()});
     });
 
@@ -57,9 +56,8 @@ export default class App extends Component {
 
     return (
         <Container>
-          <h1>React Heroes</h1>
+          <h1>React Heroes - online users: {this.state.onlineUsers}</h1>
           <Heroes heroes={this.state.heroes} onVote={this.vote.bind(this)} />
-          <Stats stats={this.state}/>
         </Container>
     );
   }
